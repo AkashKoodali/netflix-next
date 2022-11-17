@@ -5,26 +5,27 @@ import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [show, handleShow] = useState(false);
   const { logOut } = useAuth()
 
+  const handleScroll = () => {
+    if(window.scrollY > 100) {
+      handleShow(true);
+    }else { 
+      handleShow(false);
+    }
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      if(window.screenY > 0) {
-        setIsScrolled(true);
-      }else { 
-        setIsScrolled(false);
-      }
-    };
 
     window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.addEventListener("scroll", handleScroll);
-    }
+    return () => window.removeEventListener("scroll", handleScroll);
+    
   }, []);
+
   return (
-    <header className={`${isScrolled && 'bg-black'}`}>
+    <nav className={`nav ${show && "nav_black"}`}>
       {/* bg-[#141414] */}
       <div className="flex items-center space-x-2 md:space-x-10">
         <img
@@ -57,7 +58,7 @@ const Header = () => {
           />
         {/* </Link> */}
       </div>
-    </header>
+    </nav>
   );
 };
 
