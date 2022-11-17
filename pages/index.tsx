@@ -40,7 +40,10 @@ const Home = ({
     <div className={ `relative h-screen bg-gradient-to-b lg:h-[140vh] ${showModal && "!h-screen overflow-hidden"}` }>
       <Head>
         <title>Home-Netflix</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link
+      rel="icon"
+      href="https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI"
+    />
       </Head>
       <Header />
       <main className="relative pl-4 pb-24 lg:space-y-24 lg:pl-16">
