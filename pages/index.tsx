@@ -1,3 +1,4 @@
+import { getProducts, Product } from "@stripe/firestore-stripe-payments";
 import Head from "next/head";
 import { useRecoilValue } from "recoil";
 import { modalState } from "../atoms/modalAtom";
@@ -7,6 +8,7 @@ import Modal from "../components/Modal";
 import Plans from "../components/Plans";
 import Row from "../components/Row";
 import useAuth from "../hooks/useAuth";
+import payments from "../lib/stripe";
 import { Movie } from "../typings";
 import requests from "../utils/requests";
 
@@ -19,6 +21,7 @@ interface Props {
   horrorMovies: Movie[];
   romanceMovies: Movie[];
   documentaries: Movie[];
+  products: Product[],
 }
 
 const Home = ({
@@ -30,45 +33,52 @@ const Home = ({
   romanceMovies,
   topRated,
   trendingNow,
+  products,
+
 }: Props) => {
+  
   const { loading } = useAuth();
 
   const showModal = useRecoilValue(modalState);
 
   const subscription = false;
 
-  if(loading || subscription === null) return null;
+  if (loading || subscription === null) return null;
 
-  if(!subscription) return <Plans/>
+  if (!subscription) return <Plans products={products} />;
 
   return (
-    <div className={ `relative h-screen bg-gradient-to-b lg:h-[140vh] ${showModal && "!h-screen overflow-hidden"}` }>
+    <div
+      className={`relative h-screen bg-gradient-to-b lg:h-[140vh] ${
+        showModal && "!h-screen overflow-hidden"
+      }`}
+    >
       <Head>
         <title>Home-Netflix</title>
         <link
-      rel="icon"
-      href="https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI"
-    />
+          rel="icon"
+          href="https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI"
+        />
       </Head>
       <Header />
       <main className="relative pl-4 pb-24 lg:space-y-24 lg:pl-16">
         <Banner netflixOriginals={netflixOriginals} />
         <section className="md:space-y-24">
-          <Row title="Trending Now" movies={trendingNow}/>
-          <Row title="Top Ratd" movies={topRated}/>
-          <Row title="Action Movie" movies={actionMovies}/>
+          <Row title="Trending Now" movies={trendingNow} />
+          <Row title="Top Ratd" movies={topRated} />
+          <Row title="Action Movie" movies={actionMovies} />
 
           {/* {list.length > 0 && <Row title="My List" movies={list} />} */}
 
-          <Row title="Comedies" movies={comedyMovies}/>
-          <Row title="Scary Movies" movies={horrorMovies}/>
-          <Row title="Romance Movies" movies={romanceMovies}/>
-          <Row title="Documentaries" movies={documentaries}/>
+          <Row title="Comedies" movies={comedyMovies} />
+          <Row title="Scary Movies" movies={horrorMovies} />
+          <Row title="Romance Movies" movies={romanceMovies} />
+          <Row title="Documentaries" movies={documentaries} />
         </section>
       </main>
 
       {/* modal */}
-      { showModal && <Modal/> }
+      {showModal && <Modal />}
     </div>
   );
 };
@@ -76,6 +86,13 @@ const Home = ({
 export default Home;
 
 export const getServerSideProps = async () => {
+  const products = await getProducts(payments, {
+    includePrices: true,
+    activeOnly: true,
+  })
+    .then((res) => res)
+    .catch((error) => console.log(error.message));
+
   const [
     netflixOriginals,
     trendingNow,
@@ -94,7 +111,7 @@ export const getServerSideProps = async () => {
     fetch(requests.fetchHorrorMovies).then((res) => res.json()),
     fetch(requests.fetchRomanceMovies).then((res) => res.json()),
     fetch(requests.fetchDocumentaries).then((res) => res.json()),
-  ])
+  ]);
 
   return {
     props: {
@@ -106,6 +123,7 @@ export const getServerSideProps = async () => {
       horrorMovies: horrorMovies.results,
       romanceMovies: romanceMovies.results,
       documentaries: documentaries.results,
+      products,
     },
   };
 };
