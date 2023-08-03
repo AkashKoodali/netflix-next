@@ -21,7 +21,7 @@ interface Props {
   horrorMovies: Movie[];
   romanceMovies: Movie[];
   documentaries: Movie[];
-  products: Product[],
+  products: Product[];
 }
 
 const Home = ({
@@ -34,18 +34,16 @@ const Home = ({
   topRated,
   trendingNow,
   products,
-
 }: Props) => {
-  
   const { loading } = useAuth();
 
   const showModal = useRecoilValue(modalState);
 
   const subscription = false;
 
-  if (loading || subscription === null) return null;
+  // if (loading || subscription === null) return null;
 
-  if (!subscription) return <Plans products={products} />;
+  // if (!subscription) return <Plans products={products} />;
 
   return (
     <div

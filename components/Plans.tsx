@@ -6,19 +6,25 @@ import { Product } from "@stripe/firestore-stripe-payments";
 import Table from "./Table";
 import { useState } from "react";
 import Loader from "./Loader";
+import { loadCheckOut } from "../lib/stripe";
 
 interface Props {
   products: Product[];
 }
 
 function Plans({ products }: Props) {
-  const { logOut } = useAuth();
+  const { logOut, user } = useAuth();
 
   const [selectedPlan, setSelectedPlan] = useState<Product | null>(products[2]);
 
   const [isBillingLoading, setIsBillingLoading] = useState(false);
 
-  const subscribeToPlan = () => {}
+  const subscribeToPlan = () => {
+    if(!user) return
+
+    loadCheckOut(selectedPlan?.prices[0].id!)
+    setIsBillingLoading(true);
+  }
 
   return (
     <div>
@@ -50,7 +56,7 @@ function Plans({ products }: Props) {
       </header>
 
       <main
-        className="pt-28 mx-auto max-w-5xl px-5 pb-12 transition-all 
+        className="pt-5 mx-auto max-w-5xl px-5 pb-12 transition-all 
       md:px-10"
       >
         <h1 className="mb-3 text-3xl font-medium">
@@ -91,10 +97,10 @@ function Plans({ products }: Props) {
 
           <button
             disabled={!selectedPlan || isBillingLoading}
-            onClick={ subscribeToPlan }
             className={`mx-auto w-11/12 rounded bg-[rgb(229,9,20)] py-4 text-xl shadow 
             hover:bg-[#f6121d] md:w-[420px] 
             ${isBillingLoading && "opacity-60"}`}
+            onClick={subscribeToPlan}
           >
             {isBillingLoading ? (
               <Loader color="dark:fill-gray-300" />

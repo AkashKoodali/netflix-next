@@ -5,14 +5,15 @@ import { getAuth } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC9B2yRPbuv-J7CINDxqBZS67Fdso8EDSw",
-  authDomain: "netflix-next-7c857.firebaseapp.com",
-  projectId: "netflix-next-7c857",
-  storageBucket: "netflix-next-7c857.appspot.com",
-  messagingSenderId: "308813864461",
-  appId: "1:308813864461:web:8c4cd1eea8be598ae97f44"
+  apiKey: "AIzaSyDXTSh_td6vCyTYjwpmxVn_XS_6w5xeNdI",
+  authDomain: "netflix-clone-yt-eb30c.firebaseapp.com",
+  projectId: "netflix-clone-yt-eb30c",
+  storageBucket: "netflix-clone-yt-eb30c.appspot.com",
+  messagingSenderId: "834786001475",
+  appId: "1:834786001475:web:7466b81b097b2c9703caf6"
 };
 
 // Initialize Firebase

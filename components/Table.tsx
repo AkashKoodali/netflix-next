@@ -19,7 +19,7 @@ function Table({ products, selectedPlan }: Props) {
                   ? "text-[#e50914]"
                   : "text-[gray]"
               }`}
-              id={product.id}
+              key={product.id}
             >
               ₹ {product.prices[0].unit_amount! / 100}
             </td>
@@ -35,7 +35,7 @@ function Table({ products, selectedPlan }: Props) {
                   ? "text-[#e50914]"
                   : "text-[gray]"
               }`}
-              id={product.id}
+              key={product.id}
             >
               {product.metadata.videoQuality}
             </td>
@@ -51,7 +51,7 @@ function Table({ products, selectedPlan }: Props) {
                   ? "text-[#e50914]"
                   : "text-[gray]"
               }`}
-              id={product.id}
+              key={product.id}
             >
               {product.metadata.resolution}
             </td>
@@ -67,7 +67,7 @@ function Table({ products, selectedPlan }: Props) {
                   ? "text-[#e50914]"
                   : "text-[gray]"
               }`}
-              id={product.id}
+              key={product.id}
             >
               <CheckIcon className="inline-block h-8 w-8"/>
             </td>
